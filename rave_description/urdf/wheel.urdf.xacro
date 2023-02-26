@@ -1,0 +1,168 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="rave_wheel">
+
+	<!-- Properties -->
+	<xacro:property name="steer_effort" value="10.0"/>
+	<xacro:property name="steer_velocity" value="5.0"/>
+	<xacro:property name="steer_limit" value="${45.0 * M_PI/180}"/>
+	<xacro:property name="deg_to_rad" value="0.01745329251994329577"/>
+
+	<!-- Steering link dimensions -->
+	<xacro:property name="steer_radius" value="0.05" />
+	<xacro:property name="steer_thickness" value="0.02" />
+	<xacro:property name="steer_mass" value="1" />
+
+	<xacro:macro name="front_wheel_lr" params="wheel_prefix *joint_pose">
+
+		<link name="${wheel_prefix}_steer_link">
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<cylinder radius="${steer_radius}" length="${steer_thickness}"/>
+				</geometry>
+				<material name="blue" />
+			</visual>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<cylinder radius="${steer_radius}" length="${steer_thickness}"/>
+				</geometry>
+			</collision>
+			<xacro:solid_cylinder_inertial 
+			rpy="0 0 0" xyz="0 0 0"
+			mass="${steer_mass}"
+			radius="${steer_radius}" length="${steer_thickness}" />
+		</link>
+
+		<link name="${wheel_prefix}_wheel_link">
+			<inertial>
+				<mass value="2.637" />
+				<origin xyz="0 0 0" />
+				<inertia  ixx="0.02467" ixy="0" ixz="0" iyy="0.04411" iyz="0" izz="0.02467" />
+			</inertial>
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0" />
+				<geometry>
+					<mesh filename="package://rave_description/meshes/wheel.stl" />
+					<!-- <cylinder length="${wheel_length}" radius="${wheel_radius}" /> -->
+				</geometry>
+				<material name="black" />
+			</visual>
+			<collision>
+				<origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
+				<geometry>
+					<cylinder length="${wheel_length}" radius="${wheel_radius}" />
+				</geometry>
+			</collision>
+		</link>
+
+
+		<joint name="${wheel_prefix}_steer_joint" type="revolute">
+			<parent link="base_link"/>
+			<child link="${wheel_prefix}_steer_link"/>
+			<xacro:insert_block name="joint_pose"/>
+			<axis xyz="0 0 1" rpy="0 0 0" />
+			<limit effort="${steer_effort}"
+				lower="-${steer_limit}" 
+				upper="${steer_limit}"
+				velocity="${steer_velocity}"/>
+		</joint>
+
+		<joint name="${wheel_prefix}_wheel_joint" type="continuous">
+			<parent link="${wheel_prefix}_steer_link"/>
+			<child link="${wheel_prefix}_wheel_link"/>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<axis xyz="0 1 0"/>
+		</joint>
+
+		<gazebo reference="${wheel_prefix}_steer_link">
+			<material>Gazebo/Blue</material>
+		</gazebo>
+
+		<gazebo reference="${wheel_prefix}_wheel_link">
+			<mu1 value="1.0"/>
+			<mu2 value="1.0"/>
+			<kp value="10000000.0" />
+			<kd value="1.0" />
+			<fdir1 value="1 0 0"/>
+			<material>Gazebo/Red</material>
+		</gazebo>
+
+		<transmission name="${wheel_prefix}_steer_joint_trans">
+			<type>transmission_interface/SimpleTransmission</type>
+			<actuator name="${wheel_prefix}_steer_joint_motor">
+				<mechanicalReduction>1</mechanicalReduction>
+				<hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+			</actuator>
+			<joint name="${wheel_prefix}_steer_joint">
+				<hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+			</joint>
+		</transmission>
+
+		<transmission name="${wheel_prefix}_wheel_joint_trans">
+			<type>transmission_interface/SimpleTransmission</type>
+			<actuator name="${wheel_prefix}_wheel_joint_motor">
+				<mechanicalReduction>1</mechanicalReduction>
+				<hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+			</actuator>
+			<joint name="${wheel_prefix}_wheel_joint">
+				<hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+			</joint>
+		</transmission>
+
+	</xacro:macro>
+
+	<xacro:macro name="rear_wheel_lr" params="wheel_prefix *joint_pose">
+
+		<link name="${wheel_prefix}_wheel_link">
+			<inertial>
+				<mass value="2.637" />
+				<origin xyz="0 0 0" />
+				<inertia  ixx="0.02467" ixy="0" ixz="0" iyy="0.04411" iyz="0" izz="0.02467" />
+			</inertial>
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0" />
+				<geometry>
+					<mesh filename="package://rave_description/meshes/wheel.stl" />
+					<!-- <cylinder length="${wheel_length}" radius="${wheel_radius}" /> -->
+				</geometry>
+				<material name="black" />
+			</visual>
+			<collision>
+				<origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
+				<geometry>
+					<cylinder length="${wheel_length}" radius="${wheel_radius}" />
+				</geometry>
+			</collision>
+		</link>
+
+		<joint name="${wheel_prefix}_wheel_joint" type="continuous">
+			<parent link="base_link"/>
+			<child link="${wheel_prefix}_wheel_link"/>
+			<xacro:insert_block name="joint_pose"/>
+			<axis xyz="0 1 0"/>
+		</joint>
+
+		<gazebo reference="${wheel_prefix}_wheel_link">
+			<mu1 value="1.0"/>
+			<mu2 value="1.0"/>
+			<kp value="10000000.0" />
+			<kd value="1.0" />
+			<fdir1 value="1 0 0"/>
+			<material>Gazebo/Red</material>
+		</gazebo>
+
+		<transmission name="${wheel_prefix}_wheel_joint_trans">
+			<type>transmission_interface/SimpleTransmission</type>
+			<actuator name="${wheel_prefix}_wheel_joint_motor">
+				<mechanicalReduction>1</mechanicalReduction>
+				<hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+			</actuator>
+			<joint name="${wheel_prefix}_wheel_joint">
+				<hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+			</joint>
+		</transmission>
+		
+	</xacro:macro>
+</robot>
