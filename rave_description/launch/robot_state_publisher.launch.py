@@ -16,10 +16,10 @@ def generate_launch_description():
     urdf = os.path.join(
         get_package_share_directory('rave_description'),
         'urdf',
-        'steer_bot.urdf.xacro'
+        'rave.urdf.xacro'
     )
 
-    print('urdf path: {}'.format(urdf))
+    # print('urdf path: {}'.format(urdf))
 
     xacro_file = xacro.process_file(urdf)
 

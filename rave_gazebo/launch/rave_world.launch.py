@@ -12,12 +12,13 @@ from launch.substitutions import LaunchConfiguration
 
 def generate_launch_description():
     launch_desc_dir = os.path.join(get_package_share_directory('rave_description'), 'launch')
+    launch_ctrl_dir = os.path.join(get_package_share_directory('rave_control'), 'launch')
     launch_file_dir = os.path.join(get_package_share_directory('rave_gazebo'), 'launch')
     pkg_gazebo_ros = get_package_share_directory('gazebo_ros')
 
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
-    x_pose = LaunchConfiguration('x_pose', default='-2.0')
-    y_pose = LaunchConfiguration('y_pose', default='-0.5')
+    x_pose = LaunchConfiguration('x_pose', default='0.0')
+    y_pose = LaunchConfiguration('y_pose', default='0.0')
 
     world = os.path.join(
         get_package_share_directory('rave_gazebo'),
@@ -67,6 +68,12 @@ def generate_launch_description():
         launch_arguments={'use_sim_time': use_sim_time}.items()
     )
 
+    robot_control_ackermman = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(launch_ctrl_dir, 'ackermman_control.launch.py')
+        )
+    )
+
     spawn_turtlebot_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(launch_file_dir, 'spawn_rave.launch.py')
@@ -83,6 +90,7 @@ def generate_launch_description():
     ld.add_action(gzserver_cmd)
     ld.add_action(gzclient_cmd)
     ld.add_action(robot_state_publisher_cmd)
+    ld.add_action(robot_control_ackermman)
     ld.add_action(spawn_turtlebot_cmd)
 
     return ld

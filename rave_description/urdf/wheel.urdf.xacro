@@ -17,7 +17,7 @@
 
 		<link name="${wheel_prefix}_steer_link">
 			<visual>
-				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<origin xyz="0 0 0" rpy="0 0 1.0"/>
 				<geometry>
 					<cylinder radius="${steer_radius}" length="${steer_thickness}"/>
 				</geometry>
@@ -42,10 +42,10 @@
 				<inertia  ixx="0.02467" ixy="0" ixz="0" iyy="0.04411" iyz="0" izz="0.02467" />
 			</inertial>
 			<visual>
-				<origin xyz="0 0 0" rpy="0 0 0" />
+				<origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
 				<geometry>
-					<mesh filename="package://rave_description/meshes/wheel.stl" />
-					<!-- <cylinder length="${wheel_length}" radius="${wheel_radius}" /> -->
+					<!-- <mesh filename="package://rave_description/meshes/wheel.stl" /> -->
+					<cylinder length="${wheel_length}" radius="${wheel_radius}" />
 				</geometry>
 				<material name="black" />
 			</visual>
@@ -122,10 +122,10 @@
 				<inertia  ixx="0.02467" ixy="0" ixz="0" iyy="0.04411" iyz="0" izz="0.02467" />
 			</inertial>
 			<visual>
-				<origin xyz="0 0 0" rpy="0 0 0" />
+				<origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
 				<geometry>
-					<mesh filename="package://rave_description/meshes/wheel.stl" />
-					<!-- <cylinder length="${wheel_length}" radius="${wheel_radius}" /> -->
+					<!-- <mesh filename="package://rave_description/meshes/wheel.stl" /> -->
+					<cylinder length="${wheel_length}" radius="${wheel_radius}" />
 				</geometry>
 				<material name="black" />
 			</visual>

@@ -29,7 +29,7 @@ def generate_launch_description():
         executable='spawn_entity.py',
         arguments=[
             '-entity', 'rave_robot',
-            '-topic', 'robot_description'
+            '-topic', 'robot_description',
             '-x', x_pose,
             '-y', y_pose,
             '-z', '0.01'
