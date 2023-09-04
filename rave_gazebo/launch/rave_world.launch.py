@@ -11,6 +11,7 @@ from launch.substitutions import LaunchConfiguration
 
 
 def generate_launch_description():
+
     launch_desc_dir = os.path.join(get_package_share_directory('rave_description'), 'launch')
     launch_ctrl_dir = os.path.join(get_package_share_directory('rave_control'), 'launch')
     launch_file_dir = os.path.join(get_package_share_directory('rave_gazebo'), 'launch')
@@ -37,11 +38,6 @@ def generate_launch_description():
             'gui',
             default_value='false',
             description='Start Gzclient')
-
-        # DeclareLaunchArgument(
-        #     'world',
-        #     default_value=os.path.join(amr_gazebo_dir, 'worlds', 'simple_factory.world'),
-        #     description='Start Gzclient'),
 
     verbose = DeclareLaunchArgument(
             'verbose',
@@ -91,6 +87,6 @@ def generate_launch_description():
     ld.add_action(gzclient_cmd)
     ld.add_action(robot_state_publisher_cmd)
     ld.add_action(robot_control_ackermman)
-    ld.add_action(spawn_turtlebot_cmd)
+    # ld.add_action(spawn_turtlebot_cmd)
 
     return ld

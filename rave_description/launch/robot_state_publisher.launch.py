@@ -19,7 +19,7 @@ def generate_launch_description():
         'rave.urdf.xacro'
     )
 
-    # print('urdf path: {}'.format(urdf))
+    print('urdf path: {}'.format(urdf))
 
     xacro_file = xacro.process_file(urdf)
 

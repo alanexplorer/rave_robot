@@ -2,8 +2,8 @@
 Robot Ackermann Vehicle
 
 
-sudo apt install ros-rolling-urdf-tutorial
-sudo apt install ros-rolling-gazebo-ros
+sudo apt install ros-foxy-urdf-tutorial
+sudo apt install ros-foxy-gazebo-ros
 pip install xacro
 
 # how run

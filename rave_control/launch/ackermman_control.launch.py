@@ -26,12 +26,6 @@ def generate_launch_description():
         'ctrl_joint_state_publisher.yaml'
         )    
 
-    steer_bot_hardware_gazebo = os.path.join(
-        get_package_share_directory('rave_control'),
-        'config',
-        'ctrl_steer_bot_hardware_gazebo.yaml'
-        )    
-
     urdf = os.path.join(
         get_package_share_directory('rave_description'),
         'urdf',
@@ -46,12 +40,14 @@ def generate_launch_description():
         Node(
             package='controller_manager',
             executable='ros2_control_node',
+            # parameters=[
+            #     robot_description, 
+            #     ackermann_steering_controller, 
+            #     gains, 
+            #     joint_state_publisher],
             parameters=[
-                robot_description, 
                 ackermann_steering_controller, 
-                gains, 
-                joint_state_publisher, 
-                steer_bot_hardware_gazebo],
+                joint_state_publisher],
             output={
                 'stdout': 'screen',
                 'stderr': 'screen',

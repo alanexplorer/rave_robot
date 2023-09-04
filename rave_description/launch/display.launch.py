@@ -12,16 +12,20 @@ from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
 
 def generate_launch_description():
-    urdf_tutorial_path = get_package_share_path('urdf_tutorial')
+    rave_description_path = get_package_share_path('rave_description')
     
-    default_rviz_config_path = urdf_tutorial_path / 'rviz/urdf.rviz'
+    default_rviz_config_path = rave_description_path / 'rviz/rave.rviz'
 
-    gui_arg = DeclareLaunchArgument(name='gui', default_value='true', choices=['true', 'false'],
-                                    description='Flag to enable joint_state_publisher_gui')
+    gui_arg = DeclareLaunchArgument(
+        name='gui', 
+        default_value='true', 
+        choices=['true', 'false'],
+        description='Flag to enable joint_state_publisher_gui')
     
-    rviz_arg = DeclareLaunchArgument(name='rvizconfig', default_value=str(default_rviz_config_path),
-                                     description='Absolute path to rviz config file')
-
+    rviz_arg = DeclareLaunchArgument(
+        name='rvizconfig', 
+        default_value=str(default_rviz_config_path),
+        description='Absolute path to rviz config file')
 
     urdf = os.path.join(
         get_package_share_directory('rave_description'),
@@ -63,8 +67,8 @@ def generate_launch_description():
     return LaunchDescription([
         gui_arg,
         rviz_arg,
-        joint_state_publisher_node,
-        joint_state_publisher_gui_node,
         robot_state_publisher_node,
+        # joint_state_publisher_node,
+        joint_state_publisher_gui_node,
         rviz_node
     ])

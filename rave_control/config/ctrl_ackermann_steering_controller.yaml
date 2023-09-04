@@ -8,7 +8,7 @@ ackermann_steering_controller:
 
     # Joints
     rear_wheel: 'rear_wheel_joint'
-    front_steer: 'front_steer_joint'
+    front_steer: 'rear_left_wheel_joint'
 
     # Geometry
     wheel_separation_h: 0.40

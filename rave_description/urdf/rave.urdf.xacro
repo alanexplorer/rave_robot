@@ -17,18 +17,6 @@
   <xacro:property name="wheel_length" value="0.1143" />
   <xacro:property name="wheel_radius" value="0.1651" />
 
-
-  <!-- Gazebo plugins -->
-  <!-- Load ros_control plugin using the steer_bot_hardware_gazebo
-  implementation of the hardware_interface::RobotHW -->
-  <!-- <gazebo>
-    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-      <robotNamespace>${robot_namespace}</robotNamespace>
-      <robotSimType>steer_bot_hardware_gazebo/SteerBotHardwareGazebo</robotSimType>
-      <legacyModeNS>false</legacyModeNS>
-    </plugin>
-  </gazebo> -->
-
   <gazebo> 
       <!--ROS Control Plugin -->
       <plugin name="gazebo_ros_controller_manager" filename="libgazebo_ros_control.so">
@@ -99,9 +87,9 @@
     <link name="base_footprint"/>
 
     <joint name="base_footprint_joint" type="fixed">
-    <parent link="base_link" />
-    <child link="base_footprint" />
-    <origin xyz="0 0 -${wheel_radius}" rpy="0 0 0" />
+      <parent link="base_link" />
+      <child link="base_footprint" />
+      <origin xyz="0 0 -${wheel_radius}" rpy="0 0 0" />
     </joint>
 
   <!-- Rave wheel macros -->
